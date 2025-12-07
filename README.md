@@ -4,7 +4,7 @@
 STUDYBUDDY is a Flask-based web application designed to facilitate collaborative learning and study group management. The platform helps students connect, share resources, and study together effectively.
 
 🏗️ Project Structure
-text
+
 STUDYBUDDY/
 ├── static/                 # Static assets
 │   ├── script.js          # Frontend JavaScript
@@ -14,6 +14,7 @@ STUDYBUDDY/
 ├── app.py                 # Flask application
 ├── requirements.txt       # Python dependencies
 └── README.md              # This file
+
 ✨ Features
 Study Group Management: Create and join study groups
 
