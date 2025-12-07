@@ -1,4 +1,11 @@
-<img width="822" height="1022" alt="Screenshotstudy" src="https://github.com/user-attachments/assets/50201d6b-2672-4a68-94d0-700a81115339" /># Ai_ChatBot_StudyBuddy
+# Ai_ChatBot_StudyBuddy
+
+
+<img width="822" height="1022" alt="Screenshotstudy" src="https://github.com/user-attachments/assets/50201d6b-2672-4a68-94d0-700a81115339" />
+
+
+# Ai_ChatBot_StudyBuddy
+<img width="1918" height="1117" alt="dd" src="https://github.com/user-attachments/assets/ffd87b58-605c-44ab-97db-348ede4cacad" />
 
 📋 Project Overview
 STUDYBUDDY is a Flask-based web application designed to facilitate collaborative learning and study group management. The platform helps students connect, share resources, and study together effectively.
@@ -13,7 +20,8 @@ STUDYBUDDY/
 │   └── index.html         # Main page template
 ├── app.py                 # Flask application
 ├── requirements.txt       # Python dependencies
-└── README.md          
+└── README.md    
+
 ![<img width="1918" height="1117" alt="dd" src="https://github.com/user-attachments/assets/8cae5d22-09c2-4362-b7bd-50e0baead5ef" /> Screenshotstudy.png…]()
    # This file
 
