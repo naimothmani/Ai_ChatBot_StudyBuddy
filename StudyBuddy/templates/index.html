@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Study Buddy - HIDE Project</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .header {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header h2 {
+            color: #666;
+            font-size: 1.2rem;
+            font-weight: normal;
+        }
+
+        .ai-status {
+            display: inline-block;
+            background: #4CAF50;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        .ai-status.offline {
+            background: #ff9800;
+        }
+
+        .main-content {
+            display: flex;
+            gap: 20px;
+            min-height: 600px;
+        }
+
+        .chat-container {
+            flex: 2;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            background: #f9f9f9;
+            min-height: 400px;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 12px 16px;
+            border-radius: 15px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+
+        .user-message {
+            background: #667eea;
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 5px;
+        }
+
+        .bot-message {
+            background: #f1f1f1;
+            color: #333;
+            margin-right: auto;
+            border-bottom-left-radius: 5px;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .chat-input input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .chat-input button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .chat-input button:hover {
+            background: #5a67d8;
+        }
+
+        .sidebar {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .features-box {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .features-box h3 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .features-list {
+            list-style: none;
+        }
+
+        .features-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .features-list li:last-child {
+            border-bottom: none;
+        }
+
+        .plan-creator {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .plan-creator h3 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-group button {
+            width: 100%;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .form-group button:hover {
+            background: #45a049;
+        }
+
+        .plan-output {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 Digital Study Buddy</h1>
+            <h2>HIDE Humanities Project - Engineering Student Assistant</h2>
+            <div class="ai-status {{ 'offline' if not ai_available else '' }}" id="aiStatus">
+                {{ '🤖 AI Mode: ONLINE' if ai_available else '⚠️ AI Mode: OFFLINE (Using Smart Responses)' }}
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="chat-container">
+                <h3>💬 Chat with Study Buddy</h3>
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message bot-message">
+                        <strong>Study Buddy:</strong> 👋 Hello! I'm your Digital Study Buddy! I can help with study techniques, exam preparation, time management, and motivation. How can I assist you today?
+                    </div>
+                </div>
+                
+                <div class="chat-input">
+                    <input type="text" id="userInput" placeholder="Ask me anything about studying..." onkeypress="handleKeyPress(event)">
+                    <button onclick="sendMessage()">Send</button>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="features-box">
+                    <h3>🌟 Features</h3>
+                    <ul class="features-list" id="featuresList">
+                        <li>📅 Personalized Study Schedules</li>
+                        <li>⏰ Smart Reminders & Deadlines</li>
+                        <li>🧠 Proven Study Techniques</li>
+                        <li>💪 Motivation & Stress Management</li>
+                        <li>📚 Exam Preparation Strategies</li>
+                        <li>🎯 Progress Tracking & Analytics</li>
+                    </ul>
+                </div>
+
+                <div class="plan-creator">
+                    <h3>📚 Create Study Plan</h3>
+                    <div class="form-group">
+                        <label for="subjects">Subjects (comma-separated):</label>
+                        <input type="text" id="subjects" placeholder="e.g., Math, Physics, Programming">
+                    </div>
+                    <div class="form-group">
+                        <label for="hours">Hours per day:</label>
+                        <input type="number" id="hours" value="3" min="1" max="8">
+                    </div>
+                    <div class="form-group">
+                        <label for="days">Number of days:</label>
+                        <input type="number" id="days" value="7" min="1" max="30">
+                    </div>
+                    <div class="form-group">
+                        <button onclick="createStudyPlan()">Generate Study Plan</button>
+                    </div>
+                    <div class="plan-output" id="planOutput"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>🎓 HIDE Humanities Project | Created by: Naim Othmani & Yassin Oueslati</p>
+            <p>📚 Digital Study Buddy - Helping Engineering Students Succeed</p>
+        </div>
+    </div>
+
+    <script>
+        // Add message to chat
+        function addMessage(sender, text) {
+            const messagesDiv = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}-message`;
+            messageDiv.innerHTML = `<strong>${sender === 'user' ? 'You' : 'Study Buddy'}:</strong> ${text}`;
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        // Send message to server
+        async function sendMessage() {
+            const input = document.getElementById('userInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Add user message
+            addMessage('user', message);
+            input.value = '';
+            
+            // Show typing indicator
+            addMessage('bot', 'Typing...');
+            
+            try {
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ message: message })
+                });
+                
+                const data = await response.json();
+                
+                // Remove typing indicator
+                const messages = document.getElementById('chatMessages');
+                messages.removeChild(messages.lastChild);
+                
+                // Add bot response
+                addMessage('bot', data.response);
+                
+            } catch (error) {
+                console.error('Error:', error);
+                const messages = document.getElementById('chatMessages');
+                messages.removeChild(messages.lastChild);
+                addMessage('bot', 'Sorry, I encountered an error. Please try again.');
+            }
+        }
+
+        // Handle Enter key
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        // Create study plan
+        async function createStudyPlan() {
+            const subjects = document.getElementById('subjects').value;
+            const hours = document.getElementById('hours').value;
+            const days = document.getElementById('days').value;
+            
+            if (!subjects.trim()) {
+                alert('Please enter at least one subject');
+                return;
+            }
+            
+            const subjectsArray = subjects.split(',').map(s => s.trim()).filter(s => s);
+            
+            try {
+                const response = await fetch('/create_plan', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        subjects: subjectsArray,
+                        hours: parseInt(hours),
+                        days: parseInt(days)
+                    })
+                });
+                
+                const data = await response.json();
+                const planOutput = document.getElementById('planOutput');
+                
+                if (data.error) {
+                    planOutput.innerHTML = `<p style="color: red;">Error: ${data.error}</p>`;
+                } else {
+                    planOutput.innerHTML = `<h4>📋 Your Study Plan:</h4><p style="white-space: pre-line;">${data.plan}</p>`;
+                }
+                
+                planOutput.style.display = 'block';
+                
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error creating study plan. Please try again.');
+            }
+        }
+
+        // Load features dynamically
+        async function loadFeatures() {
+            try {
+                const response = await fetch('/features');
+                const data = await response.json();
+                
+                const featuresList = document.getElementById('featuresList');
+                featuresList.innerHTML = '';
+                
+                data.features.forEach(feature => {
+                    const li = document.createElement('li');
+                    li.textContent = feature;
+                    featuresList.appendChild(li);
+                });
+                
+            } catch (error) {
+                console.error('Error loading features:', error);
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', loadFeatures);
+    </script>
+</body>
+</html>
