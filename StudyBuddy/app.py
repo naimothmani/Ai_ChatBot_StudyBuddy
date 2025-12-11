@@ -1,25 +1,19 @@
 from flask import Flask, render_template, request, jsonify
 import random
 import datetime
-import google.generativeai as genai  # ✅ OLD SDK that works
 import time
+import os
 
 app = Flask(__name__)
 
-# Initialize Gemini API - Auto fallback to smart mode
-try:
-    GEMINI_API_KEY = "AIzaSyBB4P62BhO69mpYal_TjB9fvivkjikVhag"
-    genai.configure(api_key=GEMINI_API_KEY)
-    # ✅ Use a simple, working model
-    model = genai.GenerativeModel('gemini-1.5-flash-latest')  # Changed to latest
-    AI_AVAILABLE = True
-    print("✅ Gemini API connected with OLD SDK!")
-except Exception as e:
-    print(f"⚠️ Gemini API Error: {e}")
-    AI_AVAILABLE = False
-    print("✨ Auto-activated: Smart Mode (Enhanced Mock Responses)")
+# ===========================================
+# AI CONFIGURATION (Smart Mode Only for Now)
+# ===========================================
+AI_AVAILABLE = False  # Start with Smart Mode for reliability
 
-# Enhanced smart responses - Always available
+# ===========================================
+# SMART RESPONSES (Always Available)
+# ===========================================
 SMART_RESPONSES = {
     "greeting": [
         "✨ Hello! I'm Aura Study Buddy! Ready to illuminate your learning journey?",
@@ -59,15 +53,6 @@ SMART_RESPONSES = {
     ]
 }
 
-def get_gemini_response(user_input):
-    """Get response from Gemini AI using OLD SDK"""
-    try:
-        response = model.generate_content(user_input)
-        return response.text.strip()
-    except Exception as e:
-        print(f"Gemini generation error: {e}")
-        return get_smart_response(user_input)
-
 def get_smart_response(user_input):
     """Get smart response from our enhanced database"""
     user_input = user_input.lower()
@@ -95,6 +80,10 @@ def get_smart_response(user_input):
     else:
         return random.choice(SMART_RESPONSES["default"])
 
+# ===========================================
+# FLASK ROUTES
+# ===========================================
+
 @app.route('/')
 def home():
     """Main page"""
@@ -102,7 +91,7 @@ def home():
 
 @app.route('/chat', methods=['POST'])
 def chat():
-    """Handle chat messages - Use AI if available, otherwise smart mode"""
+    """Handle chat messages"""
     data = request.json
     user_input = data.get('message', '').strip()
     
@@ -111,17 +100,13 @@ def chat():
     
     time.sleep(0.3)
     
-    if AI_AVAILABLE:
-        response = get_gemini_response(user_input)
-        mode = 'ai'
-    else:
-        response = get_smart_response(user_input)
-        mode = 'smart'
+    # Always use smart responses for now (reliable)
+    response = get_smart_response(user_input)
     
     return jsonify({
         'response': response,
-        'ai_mode': AI_AVAILABLE,
-        'mode': mode
+        'ai_mode': False,  # Smart mode
+        'mode': 'smart'
     })
 
 @app.route('/create_plan', methods=['POST'])
@@ -185,21 +170,6 @@ def create_plan():
         'created': datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
     })
 
-@app.route('/features')
-def get_features():
-    """Get features list"""
-    features = [
-        "✨ Smart Learning Algorithms",
-        "⏰ Intelligent Time Management",
-        "🧠 Neuroscience-Backed Techniques",
-        "💫 Personalized Study Plans",
-        "📊 Progress Analytics",
-        "🔥 Motivation Engine",
-        "🎯 Focus Optimization",
-        "🚀 Quick Learning Hacks"
-    ]
-    return jsonify({'features': features})
-
 @app.route('/quick_tips')
 def get_quick_tips():
     """Get quick study tips"""
@@ -215,13 +185,23 @@ def get_quick_tips():
     ]
     return jsonify({'tips': random.sample(tips, 3)})
 
+@app.route('/health')
+def health():
+    """Health check endpoint for Render"""
+    return jsonify({'status': 'healthy', 'timestamp': datetime.datetime.now().isoformat()})
+
+# ===========================================
+# APPLICATION ENTRY POINT
+# ===========================================
+
 if __name__ == '__main__':
     print("="*60)
-    print("✨ AURA STUDY BUDDY - OLD SDK VERSION")
+    print("✨ AURA STUDY BUDDY - READY FOR RENDER")
     print("="*60)
-    print(f"🎓 Created by: Naim Othmani & Yassin Oueslati")
-    print(f"🤖 AI Status: {'✅ CONNECTED' if AI_AVAILABLE else '⚠️ SMART MODE'}")
-    print(f"📦 SDK: google-generativeai (old, stable version)")
-    print("🌐 Server: http://localhost:5000")
+    print(f"🤖 AI Status: SMART MODE (Always Available)")
+    print(f"🚀 Starting server on port: {os.environ.get('PORT', 5000)}")
     print("="*60)
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    
+    # Get port from environment variable (Render sets this)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(debug=False, host='0.0.0.0', port=port)
