@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AURA Study Buddy | Immersive AI Learning</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+    <style>
+        /* AURA STUDY BUDDY - Complete CSS */
+        :root {
+            --primary-color: #0a0a0f;
+            --secondary-color: #1a1a2e;
+            --accent-color: #00bcd4;
+            --accent-glow: rgba(0, 188, 212, 0.3);
+            --neon-purple: #9c27b0;
+            --neon-pink: #e91e63;
+            --neon-green: #00ff88;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-muted: rgba(255, 255, 255, 0.5);
+            --font-primary: 'Montserrat', sans-serif;
+            --card-bg: rgba(26, 26, 46, 0.7);
+            --card-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background-color: var(--primary-color);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Particle Container */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+            z-index: 1;
+        }
+
+        /* Main Content Layer */
+        .main-content {
+            position: relative;
+            z-index: 2;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .main-header {
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--card-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: 1px;
+        }
+
+        .logo i {
+            color: var(--accent-color);
+            font-size: 2rem;
+        }
+
+        .main-nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        .main-nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .main-nav a:hover {
+            color: var(--text-primary);
+        }
+
+        .main-nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-color), var(--neon-purple));
+            transition: width 0.3s ease;
+        }
+
+        .main-nav a:hover::after {
+            width: 100%;
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .stat-badge {
+            background: var(--card-bg);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid var(--card-border);
+        }
+
+        .ai-status {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ai-status.online {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--neon-green);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .ai-status.offline {
+            background: rgba(255, 193, 7, 0.1);
+            color: #ffc107;
+            border: 1px solid rgba(255, 193, 7, 0.3);
+        }
+
+        .ai-status i {
+            font-size: 0.6rem;
+        }
+
+        /* Container */
+        .container {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            flex: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Chat Area */
+        .chat-area {
+            flex: 2;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--card-border);
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            height: 75vh;
+        }
+
+        .chat-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .chat-header h2 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+        }
+
+        .chat-header p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Messages Container */
+        .messages-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .message {
+            display: flex;
+            gap: 15px;
+            max-width: 80%;
+        }
+
+        .bot-message {
+            align-self: flex-start;
+        }
+
+        .user-message {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .bot-message .message-avatar {
+            background: linear-gradient(135deg, var(--accent-color), var(--neon-purple));
+        }
+
+        .user-message .message-avatar {
+            background: linear-gradient(135deg, var(--neon-pink), #ff4081);
+        }
+
+        .message-content {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px 20px;
+            border-radius: 15px;
+            border: 1px solid var(--card-border);
+            min-width: 200px;
+        }
+
+        .user-message .message-content {
+            background: rgba(0, 188, 212, 0.1);
+            border-color: rgba(0, 188, 212, 0.3);
+        }
+
+        .message-sender {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            color: var(--accent-color);
+        }
+
+        .user-message .message-sender {
+            color: var(--neon-pink);
+        }
+
+        .message-text {
+            line-height: 1.6;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+        }
+
+        .message-time {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+            text-align: right;
+        }
+
+        /* Input Area */
+        .input-area {
+            padding: 20px;
+            border-top: 1px solid var(--card-border);
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        #messageInput {
+            flex: 1;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-family: var(--font-primary);
+        }
+
+        #messageInput:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px var(--accent-glow);
+        }
+
+        #messageInput::placeholder {
+            color: var(--text-muted);
+        }
+
+        .send-btn {
+            width: 60px;
+            background: linear-gradient(135deg, var(--accent-color), var(--neon-purple));
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .send-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .quick-suggestions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+        }
+
+        .quick-suggestions span {
+            color: var(--text-secondary);
+        }
+
+        .suggestion {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .suggestion:hover {
+            background: rgba(0, 188, 212, 0.1);
+            border-color: var(--accent-color);
+            color: var(--text-primary);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--card-border);
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .card h4 {
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: var(--font-primary);
+        }
+
+        .btn-aura {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--accent-color), var(--neon-purple));
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .btn-aura:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 188, 212, 0.4);
+        }
+
+        /* Footer */
+        .main-footer {
+            padding: 30px 40px;
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--card-border);
+            margin-top: auto;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-bottom: 20px;
+        }
+
+        .footer-section h5 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-section p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .copyright {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            padding-top: 20px;
+            border-top: 1px solid var(--card-border);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-color);
+            border-radius: 4px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .main-header {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px 20px;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .chat-area {
+                height: 65vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Particle Background -->
+    <div id="particles-js"></div>
+
+    <!-- Main Content Layer -->
+    <div class="main-content">
+        <!-- Header -->
+        <header class="main-header">
+            <a href="#" class="logo">
+                <i class="fas fa-brain"></i>
+                AURA.ai
+            </a>
+            <nav class="main-nav">
+                <a href="#"><i class="fas fa-rocket"></i> Features</a>
+                <a href="#"><i class="fas fa-chart-line"></i> Analytics</a>
+                <a href="#"><i class="fas fa-cogs"></i> Settings</a>
+            </nav>
+            <div class="header-stats">
+                <span class="stat-badge">
+                    <i class="fas fa-users"></i>
+                    <span id="userCount">1000+</span> Learners
+                </span>
+                <span class="ai-status {{ 'online' if ai_available else 'offline' }}" id="aiStatus">
+                    <i class="fas fa-circle"></i>
+                    {{ 'AI Active' if ai_available else 'Smart Mode' }}
+                </span>
+            </div>
+        </header>
+
+        <!-- Main Container -->
+        <div class="container">
+            <!-- Left Sidebar -->
+            <aside class="sidebar">
+                <div class="card">
+                    <h4><i class="fas fa-book-open"></i> Create Study Plan</h4>
+                    <div class="form-group">
+                        <input type="text" id="planSubjects" placeholder="Subjects (comma separated)">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-clock"></i> Hours/Day</label>
+                        <input type="number" id="planHours" value="3" min="1" max="8">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-calendar-day"></i> Days</label>
+                        <input type="number" id="planDays" value="7" min="1" max="30">
+                    </div>
+                    <button class="btn-aura" onclick="createStudyPlan()">
+                        <i class="fas fa-magic"></i> Generate Plan
+                    </button>
+                    <div class="plan-output" id="planOutput" style="display: none; margin-top: 15px; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 10px;"></div>
+                </div>
+
+                <div class="card">
+                    <h4><i class="fas fa-bolt"></i> Quick Actions</h4>
+                    <button class="btn-aura" onclick="quickQuestion('best study techniques')">
+                        <i class="fas fa-graduation-cap"></i> Study Tips
+                    </button>
+                    <button class="btn-aura" onclick="quickQuestion('exam preparation strategies')">
+                        <i class="fas fa-file-alt"></i> Exam Prep
+                    </button>
+                    <button class="btn-aura" onclick="quickQuestion('motivation for studying')">
+                        <i class="fas fa-fire"></i> Get Motivated
+                    </button>
+                </div>
+
+                <div class="card">
+                    <h4><i class="fas fa-chart-bar"></i> Today's Stats</h4>
+                    <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--card-border);">
+                        <span>Study Hours</span>
+                        <span style="color: var(--neon-green); font-weight: 600;">3.5h</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--card-border);">
+                        <span>Focus Score</span>
+                        <span style="color: var(--neon-green); font-weight: 600;">87%</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; padding: 10px 0;">
+                        <span>Tasks Done</span>
+                        <span style="color: var(--neon-green); font-weight: 600;">12/15</span>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Chat Area -->
+            <main class="chat-area">
+                <!-- Chat Header -->
+                <div class="chat-header">
+                    <h2><i class="fas fa-robot"></i> Aura Study Buddy</h2>
+                    <p>Your immersive AI learning companion</p>
+                </div>
+
+                <!-- Chat Messages -->
+                <div class="messages-container" id="chatMessages">
+                    <!-- Welcome Message -->
+                    <div class="message bot-message">
+                        <div class="message-avatar">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="message-content">
+                            <div class="message-sender">Aura AI</div>
+                            <div class="message-text">
+                                ✨ Welcome to the future of learning! I'm Aura, your AI study companion. 
+                                I combine cutting-edge AI with neuroscience-backed techniques to optimize your learning.
+                                Ready to begin your quantum learning journey?
+                            </div>
+                            <div class="message-time">Just now</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Input -->
+                <div class="input-area">
+                    <div class="input-wrapper">
+                        <input type="text" 
+                               id="messageInput" 
+                               placeholder="Ask me anything about studying, focus, or learning techniques..."
+                               onkeypress="handleKeyPress(event)">
+                        <button class="send-btn" onclick="sendMessage()">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                    <div class="quick-suggestions">
+                        <span>Try: </span>
+                        <button class="suggestion" onclick="quickQuestion('best study techniques')">
+                            Study Techniques
+                        </button>
+                        <button class="suggestion" onclick="quickQuestion('how to focus better')">
+                            Focus Tips
+                        </button>
+                        <button class="suggestion" onclick="quickQuestion('exam preparation plan')">
+                            Exam Prep
+                        </button>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Footer -->
+        <footer class="main-footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h5><i class="fas fa-graduation-cap"></i> Aura Study Buddy</h5>
+                    <p>Revolutionizing learning through AI and neuroscience</p>
+                </div>
+                <div class="footer-section">
+                    <h5><i class="fas fa-users"></i> Creators</h5>
+                    <p>Naim Othmani & Yassin Oueslati</p>
+                </div>
+                <div class="footer-section">
+                    <h5><i class="fas fa-chart-line"></i> Stats</h5>
+                    <p>50,000+ study hours tracked</p>
+                    <p>92% success rate</p>
+                </div>
+            </div>
+            <p class="copyright">&copy; 2024 Aura Study Buddy. All Rights Reserved.</p>
+        </footer>
+    </div>
+<script>
+    // Initialize Particle Background
+    tsParticles.load('particles-js', {
+        background: { color: "#0a0a0f" },
+        fpsLimit: 120,
+        interactivity: {
+            events: {
+                onHover: { enable: true, mode: "repulse" },
+                onClick: { enable: true, mode: "push" }
+            }
+        },
+        particles: {
+            color: { value: ["#00bcd4", "#9c27b0", "#00ff88", "#e91e63"] },
+            links: {
+                color: "#ffffff",
+                distance: 150,
+                enable: true,
+                opacity: 0.2,
+                width: 1
+            },
+            move: {
+                direction: "none",
+                enable: true,
+                outModes: "bounce",
+                speed: 1
+            },
+            number: { value: 60 },
+            opacity: { value: 0.3 },
+            shape: { type: "circle" },
+            size: { value: { min: 1, max: 5 } }
+        }
+    });
+
+    // Always show Smart Mode in status
+    document.getElementById('aiStatus').innerHTML = `
+        <i class="fas fa-circle" style="color: #ffc107"></i>
+        SMART MODE (Always Available)
+    `;
+    document.getElementById('aiStatus').className = 'ai-status offline';
+
+    // Chat Functions
+    function sendMessage() {
+        const input = document.getElementById('messageInput');
+        const message = input.value.trim();
+        
+        if (!message) return;
+        
+        // Add user message
+        addMessage(message, 'user');
+        input.value = '';
+        
+        // Show typing indicator
+        showTyping();
+        
+        // Always use smart mode - no API errors
+        setTimeout(() => {
+            removeTyping();
+            const smartResponse = generateSmartResponse(message);
+            addMessage(smartResponse, 'bot');
+        }, 800); // Simulate thinking time
+    }
+
+    // Smart response generator (client-side fallback)
+    function generateSmartResponse(userInput) {
+        const responses = {
+            greeting: [
+                "✨ Hello! I'm Aura Study Buddy in Smart Mode! Ready to optimize your learning?",
+                "🌟 Welcome! I'm here with enhanced smart responses to help you study better!",
+                "🚀 Hey there! Smart Mode activated - let's make studying efficient and effective!"
+            ],
+            study: [
+                "📚 **Smart Study Tip**: Use the Pomodoro technique - 25 min focus, 5 min break!",
+                "🧠 **Memory Hack**: Teach what you learn to someone else (real or imaginary)!",
+                "⚡ **Focus Boost**: Eliminate digital distractions - phone on airplane mode!"
+            ],
+            exam: [
+                "🔥 **Exam Strategy**: Start with past papers, focus on high-yield topics!",
+                "📊 **Test Prep**: Create summary sheets for each chapter - condense key points!"
+            ],
+            default: [
+                "🎓 I'm in Smart Mode! Ask me about study techniques, time management, or motivation!",
+                "💡 Try: 'How to focus better?' or 'Best study schedule for exams?'"
+            ]
+        };
+        
+        const input = userInput.toLowerCase();
+        
+        if (input.includes('hi') || input.includes('hello') || input.includes('hey')) {
+            return responses.greeting[Math.floor(Math.random() * responses.greeting.length)];
+        }
+        else if (input.includes('study') || input.includes('learn')) {
+            return responses.study[Math.floor(Math.random() * responses.study.length)];
+        }
+        else if (input.includes('exam') || input.includes('test')) {
+            return responses.exam[Math.floor(Math.random() * responses.exam.length)];
+        }
+        else {
+            return responses.default[Math.floor(Math.random() * responses.default.length)];
+        }
+    }
+
+    function addMessage(text, sender) {
+        const container = document.getElementById('chatMessages');
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${sender}-message`;
+        
+        const time = new Date().toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        
+        const avatarIcon = sender === 'bot' ? 'fa-robot' : 'fa-user';
+        const senderName = sender === 'bot' ? 'Aura AI' : 'You';
+        
+        messageDiv.innerHTML = `
+            <div class="message-avatar">
+                <i class="fas ${avatarIcon}"></i>
+            </div>
+            <div class="message-content">
+                <div class="message-sender">${senderName}</div>
+                <div class="message-text">${formatText(text)}</div>
+                <div class="message-time">${time}</div>
+            </div>
+        `;
+        
+        container.appendChild(messageDiv);
+        container.scrollTop = container.scrollHeight;
+    }
+
+    function showTyping() {
+        const container = document.getElementById('chatMessages');
+        const typingDiv = document.createElement('div');
+        typingDiv.id = 'typingIndicator';
+        typingDiv.className = 'message bot-message';
+        
+        typingDiv.innerHTML = `
+            <div class="message-avatar">
+                <i class="fas fa-robot"></i>
+            </div>
+            <div class="message-content">
+                <div class="message-sender">Aura AI</div>
+                <div class="message-text">
+                    <div style="display: flex; gap: 5px;">
+                        <div style="width: 8px; height: 8px; background: var(--accent-color); border-radius: 50%; animation: bounce 1.4s infinite;"></div>
+                        <div style="width: 8px; height: 8px; background: var(--accent-color); border-radius: 50%; animation: bounce 1.4s infinite 0.2s;"></div>
+                        <div style="width: 8px; height: 8px; background: var(--accent-color); border-radius: 50%; animation: bounce 1.4s infinite 0.4s;"></div>
+                    </div>
+                </div>
+                <div class="message-time">thinking...</div>
+            </div>
+        `;
+        
+        container.appendChild(typingDiv);
+        container.scrollTop = container.scrollHeight;
+    }
+
+    function removeTyping() {
+        const typing = document.getElementById('typingIndicator');
+        if (typing) typing.remove();
+    }
+
+    function formatText(text) {
+        return text
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\n/g, '<br>');
+    }
+
+    function handleKeyPress(event) {
+        if (event.key === 'Enter') {
+            sendMessage();
+        }
+    }
+
+    function quickQuestion(question) {
+        document.getElementById('messageInput').value = question;
+        sendMessage();
+    }
+
+    async function createStudyPlan() {
+        const subjectsInput = document.getElementById('planSubjects');
+        const hoursInput = document.getElementById('planHours');
+        const daysInput = document.getElementById('planDays');
+        const output = document.getElementById('planOutput');
+        
+        const subjects = subjectsInput.value.split(',').map(s => s.trim()).filter(s => s);
+        const hours = parseInt(hoursInput.value);
+        const days = parseInt(daysInput.value);
+        
+        if (!subjects.length) {
+            alert('Please enter at least one subject');
+            return;
+        }
+        
+        output.innerHTML = '<p><i class="fas fa-spinner fa-spin"></i> Generating smart study plan...</p>';
+        output.style.display = 'block';
+        
+        try {
+            const response = await fetch('/create_plan', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    subjects: subjects,
+                    hours: hours,
+                    days: days
+                })
+            });
+            
+            const data = await response.json();
+            
+            output.innerHTML = `
+                <h4 style="color: var(--accent-color); margin-bottom: 10px;">✨ Your Smart Study Plan</h4>
+                <p style="white-space: pre-line;">${data.plan}</p>
+                <button class="btn-aura" style="margin-top: 10px;" onclick="savePlan('${data.id}')">
+                    <i class="fas fa-save"></i> Save This Plan
+                </button>
+            `;
+            
+        } catch (error) {
+            // Fallback to client-side plan generation
+            output.innerHTML = `
+                <h4 style="color: var(--accent-color); margin-bottom: 10px;">✨ Generated Smart Plan</h4>
+                <p style="white-space: pre-line;">
+                📚 **QUICK STUDY PLAN**
+
+                Subjects: ${subjects.join(', ')}
+                Schedule: ${hours} hours/day for ${days} days
+                
+                💡 **Smart Tips**:
+                1. Study ${subjects[0]} in the morning when fresh
+                2. Review all subjects every 3 days
+                3. Take 10-min breaks every hour
+                4. Practice past papers weekly
+                
+                🎯 **Success Formula**: Consistency + Smart Techniques = Results!
+                </p>
+            `;
+        }
+    }
+
+    function savePlan(planId) {
+        alert(`Plan ${planId} saved! (In a real app, this would save to your profile)`);
+    }
+
+    // Load quick tips on startup
+    async function loadQuickTips() {
+        try {
+            const response = await fetch('/quick_tips');
+            const data = await response.json();
+            
+            // Add tips to chat
+            setTimeout(() => {
+                addMessage(`💡 **Quick Study Tips**: ${data.tips.join(' • ')}`, 'bot');
+            }, 1500);
+        } catch (error) {
+            // Fallback tips
+            setTimeout(() => {
+                addMessage("💡 **Pro Tip**: Study in focused blocks with regular breaks for best results!", 'bot');
+            }, 1500);
+        }
+    }
+
+    // Focus on input when page loads
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('messageInput').focus();
+        loadQuickTips();
+    });
+</script>
+</body>
+</html>
